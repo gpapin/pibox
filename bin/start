@@ -2,6 +2,7 @@
 
 version=0.3.0
 PIBOX_NAME=pibox
+
 # install docker if needed
 command -v docker || curl http://get.docker.com/ | sudo bash
 
@@ -9,10 +10,10 @@ command -v docker || curl http://get.docker.com/ | sudo bash
 docker pull seedboxes/pibox:$version
 
 # remove existing pibox if any
-if [ `docker ps -aq --filter="name=$(PIBOX_NAME)" | wc -l` -eq 1 ]
+if [ `docker ps -aq --filter="name=$PIBOX_NAME" | wc -l` -eq 1 ]
 then
     echo -n "Removing container "
-    docker rm -f `docker kill $(PIBOX_NAME)`
+    docker rm -f `docker kill $PIBOX_NAME`
 fi
 
 # try to guess host public ip + generate a password
@@ -21,7 +22,7 @@ GENPASS="$(head -c1000 /dev/urandom | tr -dc "0-9A-Za-z" | head -c8)"
 
 # start the pibox with default settings
 docker run \
-    -d --name $(PIBOX_NAME) \
+    -d --name $PIBOX_NAME \
     -v ${HOME}/pibox:/opt/rtorrent \
     -p 6980:6980 -p 443:443 -p 21:21 -p 30000-30009:30000-30009 \
     -e PIBOX_FTP=yes -e PIBOX_PUBLICIP="${HOSTIP}" -e PIBOX_PASS="${GENPASS}" \
