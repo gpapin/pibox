@@ -4,7 +4,7 @@
 MAKEFLAGS      += --no-print-directory
 
 HOST_USER      := $(shell whoami)
-HOST_IP        := $(shell ip address show dev enp0s3 scope global | grep 'inet ' | cut -d'/' -f1 | grep -oE '[0-9\.]*')
+HOST_IP        := $(shell ip address show dev eth0 scope global | grep 'inet ' | cut -d'/' -f1 | grep -oE '[0-9\.]*')
 
 # CUSTOMIZATION ===============================================================
 

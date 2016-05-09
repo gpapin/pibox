@@ -17,7 +17,7 @@ then
 fi
 
 # try to guess host public ip + generate a password
-HOSTIP="$(ip address show dev enp0s3 scope global | grep 'inet ' | cut -d'/' -f1 | grep -oE '[0-9\.]*')"
+HOSTIP="$(ip address show dev eth0 scope global | grep 'inet ' | cut -d'/' -f1 | grep -oE '[0-9\.]*')"
 GENPASS="$(head -c1000 /dev/urandom | tr -dc "0-9A-Za-z" | head -c8)"
 
 # start the pibox with default settings
