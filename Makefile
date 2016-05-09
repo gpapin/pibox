@@ -4,7 +4,7 @@
 MAKEFLAGS      += --no-print-directory
 
 HOST_USER      := $(shell whoami)
-HOST_IP        := $(shell ip address show dev eth0 scope global | grep 'inet ' | cut -d'/' -f1 | grep -oE '[0-9\.]*')
+HOST_IP        := $(shell ip address show dev enp0s3 scope global | grep 'inet ' | cut -d'/' -f1 | grep -oE '[0-9\.]*')
 
 # CUSTOMIZATION ===============================================================
 
@@ -46,7 +46,7 @@ endif
 
 CLI_FTP        := -e PIBOX_FTP=$(PIBOX_FTP)
 ifeq ($(PIBOX_FTP),yes)
-	CLI_FTP += -e PIBOX_PUBLICIP=$(PIBOX_PUBLICIP) -p $(PIBOX_FTPPORT):21 -p 30000-30009:30000-30009 
+	CLI_FTP += -e PIBOX_PUBLICIP=$(PIBOX_PUBLICIP) -p $(PIBOX_FTPPORT):21 -p 30000-30009:30000-30009
 endif
 
 CLI_USERPASS   :=
@@ -108,7 +108,7 @@ _run:
 	docker run -d --name $(PIBOX_NAME) -p 6980:6980 -p $(PIBOX_HTTPPORT):443 $(CLI_FTP) $(CLI_VOLUME) $(CLI_URL) $(CLI_USERPASS) $(CLI_IMAGE)
 	@echo "`tput sgr0`"
 
-run: _rm 
+run: _rm
 	@echo "`tput sgr0;tput bold;tput setaf 6` *** RUN ***`tput sgr0`"
 	@bash -c "source pibox.conf ; for var in \$$(compgen -v | grep PIBOX_); do export \$${var}; done; echo; \
   make _run"
